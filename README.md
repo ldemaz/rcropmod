@@ -11,7 +11,6 @@ The model requires a fully working install of DSSAT CSM to function. The source 
 
 ```r
 library(devtools)
-install_github("PrincetonUniversity/lmisc")
 install_github("ldemaz/dtraster")
 install_github("ldemaz/rcropmod", build_vignettes = TRUE)
 ```
