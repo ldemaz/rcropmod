@@ -14,3 +14,8 @@ library(devtools)
 install_github("ldemaz/dtraster")
 install_github("ldemaz/rcropmod", build_vignettes = TRUE)
 ```
+
+Browse the vignettes for worked examples. 
+```r 
+browseVignettes("rcropmod")
+``` 
