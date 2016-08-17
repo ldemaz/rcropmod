@@ -185,13 +185,14 @@ xrun <- lapply(xtabl, function(x) {  # x <- xtabl[[1]]
 })
 ```
 ```{r, echo=FALSE, eval=FALSE}
-# save for faster vignette building
-setwd("~/Dropbox/projects/rcropmod/public/rcropmod/")
-save(xrun, file = "vignettes/disabled/xrun.rda")
+# save results as system file because can't run CSM in normal vignette building
+# process
+setwd(p_wd)
+save(xrun, file = "inst/extdata/xrun.rda")
 ```
 ```{r, echo=FALSE}
-# save for faster vignette building
-load("~/Dropbox/projects/rcropmod/public/rcropmod/vignettes/disabled/xrun.rda")
+# load system file results from above, for vignette building
+load(system.file("extdata", "xrun.rda", package = "rcropmod"))
 ```
 
 <a href="#top">Back to top</a>

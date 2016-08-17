@@ -15,7 +15,7 @@ read_csm_outfile <- function(rundir, type = "summary", vars) {
   drop.col  <- "@"  # To get rid of leading @ in @RUNNO
   if(type == "summary") {
     skip <- 3
-    x <- lmisc::fp(rundir, "Summary.OUT")
+    x <- fp(rundir, "Summary.OUT")
   }
   sep <- ""  # Blank space separator
   headname <- scan(x, what = "character", sep = sep, skip = skip, nlines = 1, 

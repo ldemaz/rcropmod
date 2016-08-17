@@ -14,7 +14,7 @@
 #' read_sol_hor(solfile = f, profiles = "WI_ACLS021") 
 #' @export
 read_sol_hor <- function(solfile, profiles) {
-   sdat <- lmisc::read_lines2(solfile)
+   sdat <- read_lines2(solfile)
    idx <- which(Reduce("+", lapply(profiles, grepl, sdat, fixed = TRUE)) == 1)
    ndx <- grep("^\r$", sdat)
    ndx <- ndx[ndx > min(idx)]

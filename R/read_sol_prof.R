@@ -13,7 +13,7 @@
 #' sprofs[, c(1:7, 11:16), with = FALSE]
 #' @export
 read_sol_prof <- function(solfile, profiles) {
-   sdat <- lmisc::read_lines2(solfile)
+   sdat <- read_lines2(solfile)
    profilesr <- unique(profiles)
    if(length(profilesr) < length(profiles)) {
       print(paste("Warning: Be aware that there were duplicate profiles. These",

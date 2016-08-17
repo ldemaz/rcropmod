@@ -39,3 +39,35 @@ colinsert <- function(colname, newpos, DT) {
   setcolorder(DT, nms[c(nmsind1, oldind, nmsind2)])
   return(DT)
 }
+
+#' Easier joining of file paths and file names for reading in files
+#' 
+#' @param path Path directory
+#' @param fname File name
+#' @return Complete file string
+#' @details Function imported from lmisc, to avoid need for importing
+#' @keywords internal
+#' @export
+fp <- function(path, fname) {
+   pend <- substr(path, nchar(path), nchar(path))
+   if(pend != .Platform$file.sep) {
+      pout <- paste(path, .Platform$file.sep, fname, sep = "") 
+   } else { 
+      pout <- paste(path, fname, sep = "")
+   }
+   pout
+}
+
+#' Faster version of readLines
+#' @param fname File name to read
+#' @return Vector of strings from input file
+#' @author mlt
+#' @details Also appears in lmisc. Added here to minimize dependencies. 
+#' @references http://www.r-bloggers.com/faster-files-in-r/
+#' @keywords internal
+#' @export
+read_lines2 <- function(fname) {
+   s <- file.info(fname)$size 
+   buf <- readChar(fname, s, useBytes = TRUE)
+   strsplit(buf,"\n", fixed = TRUE, useBytes = TRUE)[[1]]
+}

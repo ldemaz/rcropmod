@@ -76,7 +76,7 @@ write_wth <- function(dates, xy, elev, srad, tmax, tmin, prec, tdew = NULL,
                   cbind(sprintf("%5s %5.1f %5.1f %5.1f %5.1f %5.1f %5.1f",
                                 yyddd, srad, tmax, tmin, prec, tdew, wind)))
 
-  write(output, lmisc::fp(outdir, outname))   
+  write(output, fp(outdir, outname))   
 }
 
 

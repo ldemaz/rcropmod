@@ -35,7 +35,7 @@ namwala <- as.data.table(namwalagr)  # convert to DT
 setnames(namwala, "zmsoilgrid", "soilid")  # change column name
 
 # extract wth ids
-wthid <- extract(weathergrid$wthgrid, as.matrix(namwaladt[, .(x, y)]))
+wthid <- extract(weathergrid$wthgrid, as.matrix(namwala[, .(x, y)]))
 namwala[, wthid := wthid]  # assign wth ids into Namwala reference grid
 setkey(namwala, "wthid")
 ```
@@ -228,12 +228,11 @@ yldb <- dt_to_raster(yldsxy[, .(x, y, wmu, cv)], CRSobj = CRS(epsg4326))
 ```{r, echo=FALSE, eval=FALSE}
 # save for faster vignette building
 setwd("~/Dropbox/projects/rcropmod/public/rcropmod/")
-save(yldb, file = "vignettes/disabled/yldb.rda")
+save(yldb, file = "inst/extdata/yldb.rda")
 ```
 ```{r, echo=FALSE}
 # save for faster vignette building
-setwd("~/Dropbox/projects/rcropmod/public/rcropmod/")
-load("vignettes/disabled/yldb.rda")
+load(system.file("extdata", "yldb.rda", package = "rcropmod"))
 ```
 
 Plot the results. 

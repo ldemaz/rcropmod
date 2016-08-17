@@ -30,6 +30,6 @@ batch_file <- function(xl, xfiles, outdir, btype, bname = "R_DSSBatch", RP = 1,
   #                                      RP, SQ, OP, CO))) 
   
   # Write the batch file to the selected folder  
-  write(outbatch, lmisc::full_path(outdir, outname), append = FALSE)
+  write(outbatch, fp(outdir, outname), append = FALSE)
   return(outname)
 }

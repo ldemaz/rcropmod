@@ -249,7 +249,7 @@ x_file <- function(xtab, outdir, z, xtype) {
   xname <- sprintf("%4s%2s%02s%4s", xf$XNAME, substr(xf$SDATE, 1, 2), z, xtype)
 
   # Write out X file
-  write(f_tab_out, lmisc::fp(outdir, xname), append = FALSE)
+  write(f_tab_out, fp(outdir, xname), append = FALSE)
 
   # Create and write out batch file - deleted this version 25/5/11
   return(xname)
