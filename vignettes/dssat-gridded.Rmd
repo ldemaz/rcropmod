@@ -1,0 +1,261 @@
+---
+title: "Gridded DSSAT Simulations"
+author: "Lyndon Estes"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{dssat-gridded}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, collapse = T, 
+                      comment = "#>", fig.align = "center")
+library(rcropmod)
+```
+
+## Overview
+
+A Zambia-focused example of rasterizing DSSAT-simulated yields (and other outputs) over Namwala District in Zambia. This demonstration uses the package dataset `weathergrid` and three system files: zamsoils.csv, zamsoil.grd, and WI.SOL.zip. The latter should already have been placed in your DSSATXX/SOIL directory, which is shown in the [initial DSSAT demonstration vignette](dssat-simple-demo.html). 
+
+## Preparing reference grid
+
+To enable gridded runs, we have to create a common reference grid that combines the soil and weather inputs that DSSAT will use. We'll use the zmsoilgrid.grd for that, as well as `weathergrid$wthgrid`. Since the [WISE data](http://dssat.net/649) has a resolution of 0.08333 degrees, and the weather data a resolution of 0.25 degrees, we will determine which soil cells intersect the weather grid. 
+```{r, eval = FALSE}
+zmsolgrid <- raster(system.file("extdata", "zmsoilgrid.grd", 
+                                package = "rcropmod"))
+zmsolref <- fread(system.file("extdata", "zamsoils.csv", package = "rcropmod"))
+setnames(zmsolref, c("CELL5M", "SoilProfile", "SharePct"), 
+         c("soilid", "prof", "share"))
+
+# build up Namwala area reference grid. 
+namwalagr <- crop(zmsolgrid, extent(weathergrid$wthgrid))  # crop soil grid
+namwala <- as.data.table(namwalagr)  # convert to DT
+setnames(namwala, "zmsoilgrid", "soilid")  # change column name
+
+# extract wth ids
+wthid <- extract(weathergrid$wthgrid, as.matrix(namwaladt[, .(x, y)]))
+namwala[, wthid := wthid]  # assign wth ids into Namwala reference grid
+setkey(namwala, "wthid")
+```
+
+<a href="#top">Back to top</a>
+
+The result of the code above is a data.table for combined whether and soil data into a common reference grid, where each _soilid_ is linked to a corresponding _wthid_, and there are coordinates associated with each. This process was facilitated by the `dtraster::as.data.table` function, which coerces a raster to data.table ([credit to Etienne Racine](https://gist.github.com/etiennebr/9515738)).
+
+Next, we construct two more reference variables:
+
+1. WTH: Using `rcropmod::wthname`, we to create the unique four character values that form the beginning of each DSSAT WTH filename, which is then merged onto our `namwala` master table. We are going to add four numbers to that also, indicating start year in weather file (05) and total number of years in record (06), which the X files will read. 
+2. ID: a numeric ID defining the unique climate-soil combination, where each _soilid_ is linked to a corresponding _wthid_, and there are coordinates associated with each. This variable will be used to create output yield grids. After doing this, we join the soil profiles data to the `namwala`, which will expand the grid.   
+
+```{r, eval = FALSE}
+# step 1
+wnames <- wthname(length(unique(wthid)), 1)  # a bit hacky at present
+wnames <- cbind.data.frame(wthid = unique(wthid), 
+                           "WTH" = paste0(wnames, "0506"))
+wnames$WTH <- as.character(wnames$WTH)  # coerce to character for weather func
+namwala <- namwala[wnames]  # merge on wthids, using data.table syntax
+
+# step 2
+namwala[, ID := .GRP, by = list(soilid, wthid)]
+colinsert("ID", 1, namwala)  # put ID in first position, by reference
+
+setkey(namwala, "soilid")
+namwala <- namwala[zmsolref[soilid %in% namwala[, soilid]]]
+setkey(namwala, "ID")
+```
+(Note the custom `colinsert` utility for `data.table`, written for this package to allow just one column to be inserted by reference. Here we used it to move _ID_ into the first column.)
+
+After merging `zmsolref` with `namwala`, the number of rows expanded to 682 from 180. Note the use of compact data.table syntax. `setkey` on soilid in `namwala` allowed the merged within `[]` (rather than using `data.table::merge`, which places the merge column first). The `zmsolref[soilid %in% namwala[, soilid]]` inside the brackets allowed subset zmsolref down to just those _soilid_ records in `namwala`. 
+
+We then need to add a final reference variable, `XNAME`, which is used to name the output X files. 
+```{r, eval = FALSE}
+namwala[, XNAME := xname(WTH, .N)]
+```
+
+<a href="#top">Back to top</a>
+
+Now we a reference grid that contains all the necessary references for running DSSAT and spatially referencing its results. Note that the soil data are a mix of spatial and non-spatial data, with each soil grid in the [WISE data](http://dssat.net/649) having one to several profiles associated with it. These provide sub-grid soil properties, and thus have no spatial reference, but instead have a percentage (_SharePct_) cell coverage value provided. We are thus going to run each WTH-prof combination, governed by _XNAME_, but the gridded results will be aggregated back to the level of _ID_. 
+
+Next, we are going to start preparing the inputs for running DSSAT. Much of this is covered in [initial DSSAT demonstration tutorial](dssat-simple-demo.html). Here we will do a few extra things, such as making weather files, and extending the concept of identifying unique "fields" (climate-soil combinations) to the reference grid. 
+
+## Inputs
+### Weather data
+
+Before writing the weather data, we still need one more variables--the elevation value for each weather location. We can use the very helpful `raster::getData` function to quickly remedy that.
+```{r, eval=FALSE}
+zamelev <- getData("alt", country = "ZMB", mask = TRUE)
+elev <- extract(zamelev, as.matrix(namwala[, .(x, y)]))
+namwala[, elev := elev]
+namwala[, elev := round(mean(elev)), by = WTH]  # average wth cell elevation
+colinsert("elev", "WTH", namwala)  # put next to coordinates
+```
+
+<a href="#top">Back to top</a>
+
+Easy. Now we will write use `weathergrid` to write out WTH files to the DSSAT Weather  directory, using `rcropmod::weather` (see [the weather file vignette](dssat-weather-file.html) for the basics of this). We need to specify the start end dates. 
+```{r, eval = FALSE}
+sdate <- "20050101"  # start date
+edate <- "20101231"  # end date
+
+# check to make sure the date ranges are what we think
+ymd <- seq(as.Date(sdate,"%Y%m%d"), as.Date(edate,"%Y%m%d"), by = 1)
+length(ymd) == weathergrid$C1960[, .N]
+
+# create wth files in loop 
+wthdir <- "~/DSSAT45/Weather/"  # specify your DSSAT install directory
+for(i in unique(namwala$wthid)) {  # loop unique wthids in namwala;
+  d <- namwala[wthid == i][1]  # just need first record for necessary info
+  wdat <- weathergrid[[paste0("C", i)]]  # select out correct grid
+  print(paste("writing WTH file for", d$WTH))
+  weather(xy = c("x"= d$x, "y" = d$y), elev = d$elev, srad = wdat$sw, 
+          tmax = wdat$tmax, tmin = wdat$tmin, prec = wdat$prec, 
+          sdate = sdate, edate = edate, name = d$WTH, outdir = wthdir)
+}
+```
+
+<a href="#top">Back to top</a>
+
+### X files
+
+Now we have 20 WTH files corresponding to the gridded weather data. Next we will define management variables and make the Xfiles. As with the [initial DSSAT demonstration vignette](dssat-simple-demo.html), we are going to define management variables within a `field` table, and use that to create xtables. In this example, we will only simulate a single cultivar, and we will create a unique X file for each XNAME.
+
+We are not going to vary any other management parameter in this example, so all fields will get the same treatment. The only thing that will vary is there soil and weather. So we will start by extracting the soil horizon values from each horizon, and use that as the basis for starting `field`.
+```{r, eval = FALSE}
+# need profile data for soil water initial conditions
+field <- read_sol_hor(solfile = "~/DSSAT45/SOIL/WI.SOL", 
+                      profiles = unique(namwala$prof))
+
+# Add other fixed maangement parameters
+field$CR <- "MZ"  # crop to plant (maize)
+field$PPOP <- 3.7  # maize planting density
+field$PDATE <- "05319" # planting dates (have to provide)
+field$PFRST <- "05305" # first possible planting date
+field$PLAST <- "05365" # last possible planting date
+field$SDATE <- field$ICDAT <- "05305" # initial condition and starting date
+field$PLANT <- "A" # set for automatic planting
+field$PLRS <- 90   # row spacing
+field$FAMN <- 5  # per Thornton et al (2009)
+field$H20_s <- 0.05  # initial soil moisture content of soil
+field$NYERS <- 4  # number of years to run each simulation
+field$EVAPO <- "R"  # set to Ritchie method (P-T), because no WIND/DEWP
+cult <- "HY0006"  # a single medium season cultivar
+CLNUM <- 1  # number for cultivar
+```
+
+<a href="#top">Back to top</a>
+
+Unlike the non-spatial [initial DSSAT demonstration vignette](dssat-simple-demo.html), we are going to create the `xtab` variables and X files in a single loop, and run them all at once. Note the comments within the `foreach` statement indicating where `exec_csm`, `batch_file`, and `read_csm_out` should come back in when necessary parallelization functions have been added (mostly involving writing of DSSAT file trees and executables to different folders). For now we are using `doMC` and `foreach` to simply speed-up X file creation. 
+```{r, eval = FALSE}
+# parallelize with doMC and foreach, for faster X file writing
+library(doMC)
+registerDoMC(cores = 7)
+xnms <- foreach(i = unique(namwala$XNAME)) %dopar% { 
+   # i <- unique(namwala$XNAME)[1]
+   mzx <- namwala[XNAME == i, ]
+   mzx[, ID_FIELD := fid(XNAME)]  # ID_FIELD
+   setkey(mzx, "prof")
+   mzx <- mzx[field[prof %in% mzx[, prof]]]  # merge
+   setkey(mzx, "ID_FIELD")
+   xtab <- x_tab(fields = mzx)
+   xfnm <- x_file(xtab = xtab, outdir = "~/DSSAT45/Maize", z = "01", 
+                  xtype = ".MZX")
+   
+   # for parallel runs, batch_file function will go here
+   # followed by exec_csm
+   # followed by read_csm_out, output of which will be returned below
+   return(list("xfnm" = xfnm, "N" = xtab[, list(XNAME, N)])) 
+}
+```
+
+<a href="#top">Back to top</a>
+
+## Execute
+
+Having the X files written, we create a single batch-file, execute CSM, and then read in all outputs. 
+```{r, eval=FALSE}
+# create batch file
+xl <- lapply(xnms, function(x) x$N)  # combine xnms[[x]]$N into list
+xfnm <- sapply(xnms, function(x) x$xfnm)  # xnms[[s]]$xfnm into vector
+bname <- batch_file(xl = xl, xfiles = xfnm, 
+                    outdir = "~/DSSAT45/Maize", btype = "MAIZE")
+
+# execute csm
+exec_csm(projdir = getwd(), csmdir = "~/DSSAT45/", rundir = "~/DSSAT45/Maize",
+         bname = bname)
+
+# read the results of SUMMARY.OUT in
+sdat <- read_csm_outfile(rundir = "~/DSSAT45/Maize", type = "summary", 
+                         vars = c("RUNNO", "FNAM", "SOIL_ID...", 
+                                  "PDAT", "MDAT", "HWAH", "PRCM"))
+```
+
+Note that `sdat` has 2728 rows in it, the result of 4 years of simulations for each WTH-soil combination. 
+
+## Gridding
+
+Having the results, we want to reference them back to the grid for mapping. We can join the output contained in `sdat` to namwala using the first four characters of _FNAM_, which stands for field name. The first four characters of this variable are the same as _XNAME_ in `namwala`. So we can create the same variable on `sdat` and then join. Before joining we will take the mean yield (_HWAH_). 
+```{r, eval = FALSE}
+sdat[, XNAME := substr(FNAM, 1, 4)]  # create XNAME
+colinsert("XNAME", "RUNNO", sdat)
+
+# merge mean yield
+setkey(namwala, "XNAME")
+namwala_res <- namwala[sdat[, list("yld" = round(mean(HWAH))), by = XNAME]]
+```
+
+<a href="#top">Back to top</a>
+
+That gives us mean yields over four years for each soil type. Since the soil types are at the subgrid level, we will examine final results in two ways. 
+
+1. Take a weighted average of soil type at the level of _ID_, and plot that.  
+2. Calculate coefficient of variation in yields, to give some indication as to how much soil type matters for yields. 
+```{r, eval=FALSE}
+# calculate weighted.mean and CV
+yldmu <- namwala_res[, {
+   list("wmu" = round(weighted.mean(yld, share)),
+        "cv" = round(cv(yld)))
+}, by = ID]
+
+# join with ID, x, y of namwala
+yldsxy <- yldmu[unique(namwala[, list(ID, x, y)])]
+
+# convert to raster brick for plotting
+epsg4326 <- "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"
+yldb <- dt_to_raster(yldsxy[, .(x, y, wmu, cv)], CRSobj = CRS(epsg4326))
+```
+```{r, echo=FALSE, eval=FALSE}
+# save for faster vignette building
+setwd("~/Dropbox/projects/rcropmod/public/rcropmod/")
+save(yldb, file = "vignettes/disabled/yldb.rda")
+```
+```{r, echo=FALSE}
+# save for faster vignette building
+setwd("~/Dropbox/projects/rcropmod/public/rcropmod/")
+load("vignettes/disabled/yldb.rda")
+```
+
+Plot the results. 
+```{r, fig.width = 7, fig.height = 3,}
+par(mfrow = c(1, 2), mar = c(0, 1, 0.5, 3), oma = c(0, 0, 0, 0.5))
+nms <- c("Mean Yield", "Yield CV")
+for(i in 1:2) {
+   plot(yldb[[i]], axes=FALSE, xlab = "", ylab = "", 
+        col = rev(terrain.colors(20)), box = FALSE, 
+        axis.args = list(cex.axis = 0.75), legend.width = 1, 
+        legend.shrink = 0.4, legend.mar = 5)
+   plot(weathergrid$namwala, add = TRUE)
+   mtext(nms[i], side = 3, line = -1)
+}
+```
+
+Note that a number of grids have the same values. Even though the soils data are nominally at a higher resolution than the weather data, in practice the same profiles are associated with a number of different grids. 
+
+<a href="#top">Back to top</a>
+
+
+
+
+
+

@@ -1,0 +1,56 @@
+---
+title: "Creating a DSSAT Weather File"
+author: "Lyndon Estes"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{DSSAT-weather-files}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, collapse = T, 
+                      comment = "#>")
+```
+
+We will use the `weathdat` dataset, which comes with the `rcropmod`, to provide an example of how to make a DSSAT WTH file. For this we use the `rcropmod` function `weather`. 
+
+## Create weather file 
+
+DSSAT weather files can contain a number of different variables, but at a minimum need daily TMin, TMax, rainfall, and average shortwave radiation. This will allow DSSAT to calculate evapotranspiration using the Priestly-Taylor equation. It can use the more physically realistic FAO56 routine if you can also provide dew point temperature and windspeed. We don't usually have dew point, but the `weather` function draws on `dew_point` to calculate this variable from either relative humidity and temperature or specific humidity and pressure. Here we will use the latter two variables.
+
+```{r, eval = FALSE}
+library(rcropmod)
+name <- "TEST"
+outdir <- "~/DSSAT45/Weather/"
+wdat <- weathdat$dat
+weathdat$dat[, weather(xy = weathdat$xyz[c("lat", "lon")], 
+                       elev = weathdat$xyz["elev"], srad = sw, tmax = tmax,
+                       tmin = tmin, prec = prec, wind = wind, sh = sh, 
+                       pres = pres, sdate = weathdat$dates["start"], 
+                       edate = weathdat$dates["end"], name = name, 
+                       outdir = outdir)]
+```
+
+## Quality check the WTH file
+
+It's not a bad idea to look at the resulting file to make sure the values make sense, there are missing dates, etc. Here are a few examples of checks with R. 
+```{r, eval = FALSE}
+wth <- read.table(file = paste0(outdir, "/TEST7932.WTH"), skip = 4, 
+                     sep = "", header = TRUE, stringsAsFactors = FALSE)
+
+ymd <- seq(as.Date(weathdat$dates["start"],"%Y%m%d"), 
+           as.Date(weathdat$dates["end"],"%Y%m%d"), by = 1)
+length(ymd) == length(weathdat$dat[, wind])  # true
+nrow(wth) == length(ymd)
+
+# Make sure there are no missing dates - this causes failures
+max(sapply(2:length(wth$X.DATE), function(i) {
+   as.Date(sprintf("%05s", wth$X.DATE[i]), "%y%j") - 
+      as.Date(sprintf("%05s", wth$X.DATE[i - 1]), "%y%j") 
+}))
+```
+
+And that's it. This file will be used as input in the [DSSAT demonstration tutorial](dssat-simple-demo.html).
+
