@@ -2,7 +2,7 @@ Package: rcropmod
 Type: Package
 Title: Crop model simulations in R
 Description: A package for running and analyzing the output of DSSAT CSM and 
-(eventually) other crop models.
+    (eventually) other crop models.
 Version: 0.1.0
 Date: 17-08-2016
 Authors@R: person("Lyndon", "Estes", email = "lestes@princeton.edu",
