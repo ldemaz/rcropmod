@@ -19,3 +19,7 @@ Browse the vignettes for worked examples.
 ```r 
 browseVignettes("rcropmod")
 ``` 
+
+## Funding
+The development of this package was supported by funds from Princeton University's Grand Challenges Program, the National Aeronautics and Space Administration (NNX15AC64G), and the National Science Foundation (SES-1360463, EAR-1534544). 
+
