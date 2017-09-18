@@ -170,7 +170,7 @@ Having the input parameters in a list (each list element representing a differen
 The help files will provide more details on the arguments passed to each function. 
 
 ```{r, eval=FALSE}
-xrun <- lapply(xtabl, function(x) {  # x <- xtabl[[1]]
+xrun <- lapply(xtabl, function(x) {  # x <- xtabl[[2]]
   print(x$XNAME[1])
   xf <- copy(x)
   xfnm <- x_file(xtab = xf, outdir = "~/DSSAT45/Maize", z = "01", 
