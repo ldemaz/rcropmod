@@ -1,0 +1,20 @@
+---
+title: "Notes"
+author: "Lyndon Estes"
+date: "9/22/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Overview
+
+A page for keeping track of helpful notes and lessons regarding package development, running crop models, etc. 
+
+## DSSAT
+
+Notes related to DSSAT, both R and non-R related
+
+- Do not nest DSSAT4X parent folder too deeply in your file system. There appears to be an upper limit to the length of a file path that `dscsm` can search. 
