@@ -3,12 +3,14 @@
 #' @param csmdir Master directory for DSSAT model
 #' @param rundir CSM where model should execute (e.g. Maize)
 #' @param btype Batch mode code ("B" normal batch (default), "S" spatial, etc)
+#' @param csm CSM executable name, defaults to DSCSM046.EXE
 #' @param bname Batch file name, default is R_DSSBatch.v45
 #' @return File_path for DSSAT
 #' @export 
 exec_csm <- function(projdir, csmdir, rundir, btype = "B", 
+                     csm = "DSCSM046.EXE", 
                      bname = "R_DSSBatch.v45") {
-   bcmd <- sprintf("%s%s %s %s", csmdir, "/DSCSM045.EXE", btype, bname)
+   bcmd <- sprintf("%s%s %s %s", csmdir, "/", csm, btype, bname)
    setwd(rundir)
    system(bcmd, ignore.stdout = TRUE)
    setwd(projdir)
