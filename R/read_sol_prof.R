@@ -26,7 +26,8 @@ read_sol_prof <- function(solfile, profiles) {
       a
    }))
    # idx <- which(Reduce("+", lapply(profiles, grepl, sdat, fixed = TRUE)) == 1)
-   ndx <- grep("^\r$", sdat)
+   # ndx <- grep("^\r$", sdat)
+   ndx <- which(nchar(sdat) < 3)
    ndx <- ndx[ndx > min(idx)]
    ndx <- sapply(idx, function(x) ndx[ndx > x][1] - 1)
    pdat <- do.call(rbind.data.frame, lapply(1:length(idx), function(i) { #i <- 1
@@ -42,9 +43,9 @@ read_sol_prof <- function(solfile, profiles) {
                     "SLHW" = c(80, 84), "SLHB" = c(86, 88), "SCEC" = c(90, 94),
                     "SADC" = c(96, 100))
       
-      pd <- sapply(1:nrow(hcol), function(x) { # x <- 4
+      pd <- sapply(1:nrow(hcol), function(x) { # x <- 15
          sapply(hind[1]:hind[2], function(y) { # y <- 7
-            as.numeric(substr(p[y], hcol[x, 1], hcol[x, 2]))
+            suppressWarnings(as.numeric(substr(p[y], hcol[x, 1], hcol[x, 2])))
          })
       })
       

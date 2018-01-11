@@ -44,4 +44,3 @@ missing. This could be made more efficient if these variables could be
 dropped.
 }
 \keyword{DSSAT}
-

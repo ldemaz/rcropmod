@@ -19,4 +19,3 @@ sprinter(d, tvar, spvec, vnames)
 Creates a sprintf statement
 }
 \keyword{internal}
-

@@ -46,4 +46,3 @@ Saxton, K.E. & Rawls, W.J. (2006) Soil water characteristic estimates by
 texture and organic matter for hydrologic solutions. Soil Sci Soc Am J, 70, 
 1569–1578.
 }
-

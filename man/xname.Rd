@@ -18,4 +18,3 @@ X file unique identifiers
 Designed for data.table with use of BY statements
 }
 \keyword{internal}
-

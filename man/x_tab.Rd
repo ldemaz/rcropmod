@@ -48,4 +48,3 @@ Other default settings worth knowing about:
   \item FDATE (fertilization date) is assumed to be on day of planting. 
 }
 }
-

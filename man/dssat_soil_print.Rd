@@ -42,4 +42,3 @@ transferred into the DSSATXX/SOIL directory. For large area applications,
 it might be preferable to create several soil files, perhaps one for each 
 district, province or state.
 }
-

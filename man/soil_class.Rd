@@ -34,4 +34,3 @@ Julien Moeys (2016). soiltexture: Functions for Soil Texture
 Plot, Classification and Transformation. R package version 1.4.1. 
 https://CRAN.R-project.org/package=soiltexture
 }
-

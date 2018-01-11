@@ -21,4 +21,3 @@ paw(sand, clay, soc, DF = 1, gravel = 0)
 Plant available water, adjusted for gravel and density effects.
 }
 \keyword{internal}
-

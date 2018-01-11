@@ -17,4 +17,3 @@ Based on Estes et al (2013), following Schulze et al for ACRU model.
 Region-specific functions might be better to use
 }
 \keyword{internal}
-

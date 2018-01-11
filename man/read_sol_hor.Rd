@@ -29,4 +29,3 @@ f <- "~/DSSAT45/SOIL/WI.SOL"  # .SOL file (WISE)
 read_sol_hor(solfile = f, profiles = "WI_ACLS021") 
 }
 \keyword{DSSAT}
-

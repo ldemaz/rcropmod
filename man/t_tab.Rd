@@ -17,4 +17,3 @@ t_tab(tvars, topts, ttab)
 Creates combination CSM X file treatment table
 }
 \keyword{internal}
-

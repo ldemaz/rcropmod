@@ -38,4 +38,3 @@ Estes, L.D., Chaney, N.W., Herrera-Estrada, J., Sheffield, J., Caylor, K.K.
 maize-growing season, 1979–2010. Environmental Research Letters, 9, 075005.
 }
 \keyword{datasets}
-

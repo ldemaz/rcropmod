@@ -4,7 +4,8 @@
 \alias{exec_csm}
 \title{DSSAT45 execution command}
 \usage{
-exec_csm(projdir, csmdir, rundir, btype = "B", bname = "R_DSSBatch.v45")
+exec_csm(projdir, csmdir, rundir, btype = "B", csm = "DSCSM046.EXE",
+  bname = "R_DSSBatch.v45")
 }
 \arguments{
 \item{projdir}{Your working directory}
@@ -15,6 +16,8 @@ exec_csm(projdir, csmdir, rundir, btype = "B", bname = "R_DSSBatch.v45")
 
 \item{btype}{Batch mode code ("B" normal batch (default), "S" spatial, etc)}
 
+\item{csm}{CSM executable name, defaults to DSCSM046.EXE}
+
 \item{bname}{Batch file name, default is R_DSSBatch.v45}
 }
 \value{
@@ -23,4 +26,3 @@ File_path for DSSAT
 \description{
 DSSAT45 execution command
 }
-

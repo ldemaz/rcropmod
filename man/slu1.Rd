@@ -13,4 +13,3 @@ slu1(clay1)
 Evaporation limit function from Du Toit, source unknown
 }
 \keyword{internal}
-

@@ -29,4 +29,3 @@ E.g. "EOAC and EOAA" from ET.OUT.
 \note{
 This is only set up to read in the Summary.OUT file at present
 }
-

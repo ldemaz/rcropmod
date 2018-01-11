@@ -28,4 +28,3 @@ sprofs <- read_sol_prof(solfile = f, profiles = "WI_ACLS021")
 sprofs[, c(1:7, 11:16), with = FALSE]
 }
 \keyword{DSSAT}
-

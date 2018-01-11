@@ -17,4 +17,3 @@ bdens(thetas, DF = 1, gravel = 0)
 Bulk density accounting for compaction plus gravel
 }
 \keyword{internal}
-

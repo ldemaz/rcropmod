@@ -16,4 +16,3 @@ Root distributions for DSSAT soil profiles
 DSSAT45 root growth function
 }
 \keyword{internal}
-

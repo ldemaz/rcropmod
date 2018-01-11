@@ -31,4 +31,3 @@ As presently written (4/3/15), the simulation controls will not work
 for multiple methods, as a you need a complete general and automatic section
 replicated for each treatment
 }
-

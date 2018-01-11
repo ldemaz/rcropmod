@@ -18,11 +18,10 @@ Faster version of readLines
 \details{
 Also appears in lmisc. Added here to minimize dependencies.
 }
-\author{
-mlt
-}
 \references{
 http://www.r-bloggers.com/faster-files-in-r/
 }
+\author{
+mlt
+}
 \keyword{internal}
-

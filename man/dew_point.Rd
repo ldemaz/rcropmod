@@ -39,4 +39,3 @@ Kanika Jhunjhnuwala, N. Best, M. Wilde, and I. Foster, (2014). The Parallel
 System for Integrating Impact Models and Sectors (pSIMS). Environmental 
 Modeling and Software. http://dx.doi.org/10.1016/j.envsoft.2014.04.008
 }
-

@@ -21,4 +21,3 @@ Easier joining of file paths and file names for reading in files
 Function imported from lmisc, to avoid need for importing
 }
 \keyword{internal}
-

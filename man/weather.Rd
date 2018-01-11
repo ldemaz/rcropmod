@@ -67,4 +67,3 @@ weather(xy, elev, srad, tmax, tmin, prec, wind = wind, sh = sh,
         pres = pres, sdate = sdate, edate = edate, name = name, 
         outdir = outdir)
 }
-

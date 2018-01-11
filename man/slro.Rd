@@ -19,4 +19,3 @@ slro(slo, depth, texture, drainage)
 Calcutes the runoff curve number following Gijsman et al (2007)
 }
 \keyword{internal}
-

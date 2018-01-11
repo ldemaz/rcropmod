@@ -26,4 +26,3 @@ theoretically including (although not yet tested on) other, e.g. ET.OUT.
 The vars variable should be provide the exact variable names of interest. 
 E.g. "EOAC and EOAA" from ET.OUT.
 }
-

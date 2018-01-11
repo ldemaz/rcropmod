@@ -37,4 +37,3 @@ colinsert("d", "b", DT)
 DT <- data.table(a = 1:10, b = 1:10, c = 11:20, d = 26:35)
 colinsert("d", 3, DT)
 }
-

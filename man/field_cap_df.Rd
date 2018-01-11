@@ -19,4 +19,3 @@ field_cap_df(sand, clay, soc, DF)
 Calculated field capacity accounting for compaction
 }
 \keyword{internal}
-

@@ -20,4 +20,3 @@ Field capacity at 33 kpa
 Calculates saturated moisture content, requires function field_cap
 }
 \keyword{internal}
-

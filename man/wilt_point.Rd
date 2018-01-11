@@ -20,4 +20,3 @@ Wilting point at 1500 kpa
 Calculate wilting point
 }
 \keyword{internal}
-

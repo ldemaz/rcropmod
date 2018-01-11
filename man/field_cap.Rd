@@ -20,4 +20,3 @@ Field capacity at 33 kpa
 Calculates field capacity
 }
 \keyword{internal}
-

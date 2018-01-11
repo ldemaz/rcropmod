@@ -33,4 +33,3 @@ Create a batch file for one or more CSM X files
 \note{
 Batch files are hard-coded to spatial now.  Needs to change
 }
-

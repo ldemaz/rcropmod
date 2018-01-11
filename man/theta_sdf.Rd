@@ -19,4 +19,3 @@ theta_sdf(sand, clay, soc, DF)
 Calculates saturated water content, accounting for compaction
 }
 \keyword{internal}
-

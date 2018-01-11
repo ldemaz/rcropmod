@@ -21,4 +21,3 @@ ksat(sand, clay, soc, DF = 1, gravel = 0)
 Saturated hydraulic conductivity, including gravel effects.
 }
 \keyword{internal}
-
