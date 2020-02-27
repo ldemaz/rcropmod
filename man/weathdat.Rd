@@ -3,7 +3,7 @@
 \docType{data}
 \name{weathdat}
 \alias{weathdat}
-\title{A 30 year weather dataset for a single location in Zambia}
+\title{Weather data time series}
 \format{A 3 element list consisting of two 2-element vectors and a data.table
 with 11684 rows and 6 variables:
 \itemize{
@@ -20,12 +20,11 @@ with 11684 rows and 6 variables:
     \item sh: specific humidity (kg/kg)
   }
 }}
-\usage{
-weathdat
-}
 \description{
-A dataset containing daily weather data for a location in southern Zambia. 
-The variables are as follows:
+A 30 year weather dataset for one location in southern Zambia
+}
+\examples{
+data(weathdat)
 }
 \references{
 Chaney, N.W., Sheffield, J., Villarini, G. & Wood, E.F. (2014)
@@ -37,4 +36,4 @@ Estes, L.D., Chaney, N.W., Herrera-Estrada, J., Sheffield, J., Caylor, K.K.
 & Wood, E.F. (2014) Changing water availability during the African 
 maize-growing season, 1979–2010. Environmental Research Letters, 9, 075005.
 }
-\keyword{datasets}
+\keyword{data}

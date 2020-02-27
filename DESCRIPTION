@@ -3,8 +3,8 @@ Type: Package
 Title: Crop model simulations in R
 Description: A package for running and analyzing the output of DSSAT CSM and 
     (eventually) other crop models.
-Version: 0.2.1
-Date: 10-01-2018
+Version: 0.2.2
+Date: 27-02-2020
 Authors@R: person("Lyndon", "Estes", email = "lestes@princeton.edu",
                   role = c("aut", "cre"))
 URL: https://github.com/ldemaz/rcropmod
@@ -21,6 +21,6 @@ Imports:
     data.table
 License: GPL (>= 3)
 LazyData: true
-RoxygenNote: 6.0.1
+RoxygenNote: 7.0.2
 Suggests: knitr, rmarkdown
 VignetteBuilder: knitr

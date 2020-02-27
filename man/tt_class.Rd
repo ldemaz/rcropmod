@@ -4,8 +4,13 @@
 \alias{tt_class}
 \title{Classify soil texture using USDA texture triangle}
 \usage{
-tt_class(tri.data, PiC.type = "n", css.names = NULL, text.sum = 100,
-  collapse = NULL)
+tt_class(
+  tri.data,
+  PiC.type = "n",
+  css.names = NULL,
+  text.sum = 100,
+  collapse = NULL
+)
 }
 \arguments{
 \item{tri.data}{Data frame containing the CLAY, SILT and SAND 

@@ -1,8 +1,7 @@
-#' A 30 year weather dataset for a single location in Zambia
-#'
-#' A dataset containing daily weather data for a location in southern Zambia. 
-#' The variables are as follows:
-#'
+#' Weather data time series
+#' @name weathdat
+#' @docType data
+#' @description A 30 year weather dataset for one location in southern Zambia
 #' @format A 3 element list consisting of two 2-element vectors and a data.table
 #' with 11684 rows and 6 variables:
 #' \itemize{
@@ -19,7 +18,7 @@
 #'     \item sh: specific humidity (kg/kg)
 #'   }
 #' }
-#' @references 
+#' @references
 #' Chaney, N.W., Sheffield, J., Villarini, G. & Wood, E.F. (2014)
 #' Spatial Analysis of Trends in Climatic Extremes with a High Resolution 
 #' Gridded Daily Meteorological Data Set over Sub-Saharan Africa. Journal of 
@@ -28,15 +27,17 @@
 #' Estes, L.D., Chaney, N.W., Herrera-Estrada, J., Sheffield, J., Caylor, K.K. 
 #' & Wood, E.F. (2014) Changing water availability during the African 
 #' maize-growing season, 1979–2010. Environmental Research Letters, 9, 075005.
-"weathdat"
+#' @keywords data
+#' @examples
+#' data(weathdat)
+NULL
 
-#' Weather data for gridding demonstration
-#'
-#' A dataset containing gridded daily weather data (2005-2010) over Namwala 
-#' District in Zambia, as well as a shapefile and reference grid containing cell
-#' IDs.  
-#' The variables are as follows:
-#'
+#' Gridded weather data
+#' @name weathergrid
+#' @docType data
+#' @description A 30 year weather dataset for one location in southern Zambia
+#' Weather data for gridding demonstration. Includes a shapefile and reference 
+#' grid containing cell IDs.  
 #' @format A 22 element list consisting of 1 SpatialPolygonsDataFrame, 
 #' a raster (20 cells), and 20 data.tables each containing 2191 rows and 4 
 #' variables:
@@ -61,4 +62,7 @@
 #' Estes, L.D., Chaney, N.W., Herrera-Estrada, J., Sheffield, J., Caylor, K.K. 
 #' & Wood, E.F. (2014) Changing water availability during the African 
 #' maize-growing season, 1979–2010. Environmental Research Letters, 9, 075005.
-"weathergrid"
+#' @keywords data
+#' @examples
+#' data(weathergrid)
+NULL

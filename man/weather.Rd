@@ -4,9 +4,26 @@
 \alias{weather}
 \title{Creates weather data file for crop model}
 \usage{
-weather(xy, elev, srad, tmax, tmin, prec, wind = NULL, ea = NULL,
-  rh = NULL, tmu = NULL, sh = NULL, pres = NULL, tdew = NULL, sdate,
-  edate, name, outdir, model = "DSSAT")
+weather(
+  xy,
+  elev,
+  srad,
+  tmax,
+  tmin,
+  prec,
+  wind = NULL,
+  ea = NULL,
+  rh = NULL,
+  tmu = NULL,
+  sh = NULL,
+  pres = NULL,
+  tdew = NULL,
+  sdate,
+  edate,
+  name,
+  outdir,
+  model = "DSSAT"
+)
 }
 \arguments{
 \item{xy}{vector giving longitude then latitude (degrees)}

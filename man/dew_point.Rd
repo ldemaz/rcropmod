@@ -4,8 +4,15 @@
 \alias{dew_point}
 \title{Calculate dewpoint temperature}
 \usage{
-dew_point(ea = NULL, rh = NULL, tmax = NULL, tmin = NULL, tmu = NULL,
-  sh = NULL, pres = NULL)
+dew_point(
+  ea = NULL,
+  rh = NULL,
+  tmax = NULL,
+  tmin = NULL,
+  tmu = NULL,
+  sh = NULL,
+  pres = NULL
+)
 }
 \arguments{
 \item{ea}{Vapor pressure (mb)}

@@ -132,8 +132,13 @@ slro <- function(slo, depth, texture, drainage) {
 #' it might be preferable to create several soil files, perhaps one for each 
 #' district, province or state. 
 #' @export  
-#@examples
-#dssat_soil_print(soil, filename = "TT", overwrite = TRUE)
+#' @examples
+#' # Not run
+#' # data("soildat")
+#' # dssat_dir <- "~/DSSAT46/Soil/"  # replace with path to your DSSATXX/Soil
+#' # soildat
+#' # dssat_soil_print(soildat, filename = file.path(dssat_dir, "TX"),
+#' #                  overwrite = TRUE)
 # soildt <- copy(soil)
 dssat_soil_print <- function(soildt, filename, headstring = "SOIL file", 
                              overwrite = FALSE, tier4=FALSE) {

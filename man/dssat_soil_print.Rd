@@ -4,8 +4,13 @@
 \alias{dssat_soil_print}
 \title{Creates a DSSAT .SOL (soil input) file}
 \usage{
-dssat_soil_print(soildt, filename, headstring = "SOIL file",
-  overwrite = FALSE, tier4 = FALSE)
+dssat_soil_print(
+  soildt,
+  filename,
+  headstring = "SOIL file",
+  overwrite = FALSE,
+  tier4 = FALSE
+)
 }
 \arguments{
 \item{soildt}{A data.table containing, at a minimum, the critical variable
@@ -41,4 +46,12 @@ numbers, e.g. ABAA000001, AB00000001. The file should be written or
 transferred into the DSSATXX/SOIL directory. For large area applications, 
 it might be preferable to create several soil files, perhaps one for each 
 district, province or state.
+}
+\examples{
+# Not run
+# data("soildat")
+# dssat_dir <- "~/DSSAT46/Soil/"  # replace with path to your DSSATXX/Soil
+# soildat
+# dssat_soil_print(soildat, filename = file.path(dssat_dir, "TX"),
+#                  overwrite = TRUE)
 }

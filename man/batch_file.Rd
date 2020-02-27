@@ -4,8 +4,17 @@
 \alias{batch_file}
 \title{Create a batch file for one or more CSM X files}
 \usage{
-batch_file(xl, xfiles, outdir, btype, bname = "R_DSSBatch", RP = 1,
-  SQ = 0, OP = 0, CO = 0)
+batch_file(
+  xl,
+  xfiles,
+  outdir,
+  btype,
+  bname = "R_DSSBatch",
+  RP = 1,
+  SQ = 0,
+  OP = 0,
+  CO = 0
+)
 }
 \arguments{
 \item{xfiles}{Vector of x file names}

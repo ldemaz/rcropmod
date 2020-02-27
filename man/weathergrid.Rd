@@ -3,7 +3,7 @@
 \docType{data}
 \name{weathergrid}
 \alias{weathergrid}
-\title{Weather data for gridding demonstration}
+\title{Gridded weather data}
 \format{A 22 element list consisting of 1 SpatialPolygonsDataFrame, 
 a raster (20 cells), and 20 data.tables each containing 2191 rows and 4 
 variables:
@@ -19,14 +19,13 @@ variables:
     \item prec: precipitation (mm)
   }
 }}
-\usage{
-weathergrid
-}
 \description{
-A dataset containing gridded daily weather data (2005-2010) over Namwala 
-District in Zambia, as well as a shapefile and reference grid containing cell
-IDs.  
-The variables are as follows:
+A 30 year weather dataset for one location in southern Zambia
+Weather data for gridding demonstration. Includes a shapefile and reference 
+grid containing cell IDs.
+}
+\examples{
+data(weathergrid)
 }
 \references{
 Chaney, N.W., Sheffield, J., Villarini, G. & Wood, E.F. (2014)
@@ -38,4 +37,4 @@ Estes, L.D., Chaney, N.W., Herrera-Estrada, J., Sheffield, J., Caylor, K.K.
 & Wood, E.F. (2014) Changing water availability during the African 
 maize-growing season, 1979–2010. Environmental Research Letters, 9, 075005.
 }
-\keyword{datasets}
+\keyword{data}

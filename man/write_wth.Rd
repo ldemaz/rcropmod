@@ -4,8 +4,19 @@
 \alias{write_wth}
 \title{Write out DSSAT weather file}
 \usage{
-write_wth(dates, xy, elev, srad, tmax, tmin, prec, tdew = NULL, wind = NULL,
-  outdir, name)
+write_wth(
+  dates,
+  xy,
+  elev,
+  srad,
+  tmax,
+  tmin,
+  prec,
+  tdew = NULL,
+  wind = NULL,
+  outdir,
+  name
+)
 }
 \arguments{
 \item{dates}{Vector of POSIX dates passed from weather function}

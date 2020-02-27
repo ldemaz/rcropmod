@@ -1,5 +1,4 @@
 # Pedotransfer functions
-
 #' Calculate wilting point
 #' @param sand Fraction of sand
 #' @param clay Fraction of clay
@@ -159,12 +158,12 @@ paw <- function(sand, clay, soc, DF = 1, gravel = 0) {
 #' Saxton, K.E. & Rawls, W.J. (2006) Soil water characteristic estimates by 
 #' texture and organic matter for hydrologic solutions. Soil Sci Soc Am J, 70, 
 #' 1569–1578.
+#' @export
 #' @examples 
 #' soil_hydraulics(sand = 0.29, clay = 0.32, soc = 3.51, DF = 1, gravel = 0)
 #' soil_hydraulics(sand = 0.29, clay = 0.32, soc = 3.51, DF = 0.8, gravel = 0)
 #' soil_hydraulics(sand = 0.29, clay = 0.32, soc = 3.51, DF = 1, gravel = 0.2)
 #' soil_hydraulics(sand = 0.29, clay = 0.32, soc = 3.51, DF = 0.8, gravel = 0.2)
-#' @export
 soil_hydraulics <- function(sand, clay, soc, DF = 1, gravel = 0, digits = 4, 
                             PAW = TRUE) {
   if((sand > 1) | (clay > 1)) {

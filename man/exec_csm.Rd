@@ -4,8 +4,14 @@
 \alias{exec_csm}
 \title{DSSAT45 execution command}
 \usage{
-exec_csm(projdir, csmdir, rundir, btype = "B", csm = "DSCSM046.EXE",
-  bname = "R_DSSBatch.v45")
+exec_csm(
+  projdir,
+  csmdir,
+  rundir,
+  btype = "B",
+  csm = "DSCSM046.EXE",
+  bname = "R_DSSBatch.v45"
+)
 }
 \arguments{
 \item{projdir}{Your working directory}
